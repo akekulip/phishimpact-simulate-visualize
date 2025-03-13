@@ -4,6 +4,7 @@ import Layout from "@/components/Layout";
 import BusinessProfileForm from "@/components/BusinessProfileForm";
 import PhishingSimulator from "@/components/PhishingSimulator";
 import ImpactDashboard from "@/components/ImpactDashboard";
+import DependencyNetworkSimulation from "@/components/DependencyNetworkSimulation";
 import { BusinessProfile } from "@/types/businessTypes";
 import { SimulationResults } from "@/types/simulationTypes";
 import { calculatePhishingImpact } from "@/utils/simulationUtils";
@@ -68,11 +69,18 @@ const Index = () => {
           
           <div className="lg:col-span-2">
             {simulationResults ? (
-              <ImpactDashboard 
-                businessProfile={businessProfile!}
-                simulationParams={simulationParams}
-                results={simulationResults}
-              />
+              <div className="space-y-8">
+                <ImpactDashboard 
+                  businessProfile={businessProfile!}
+                  simulationParams={simulationParams}
+                  results={simulationResults}
+                />
+                
+                <DependencyNetworkSimulation 
+                  businessProfile={businessProfile!}
+                  compromisedAccounts={simulationResults.compromisedAccounts}
+                />
+              </div>
             ) : (
               <div className="flex h-full items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 p-12 text-center">
                 <div>

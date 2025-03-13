@@ -1,6 +1,16 @@
-
 import { BusinessProfile, industryRiskFactors } from "@/types/businessTypes";
-import { SimulationParameters, SimulationResults, FinancialImpact, OperationalImpact, RiskLevels, IncidenceStep } from "@/types/simulationTypes";
+import { 
+  SimulationParameters, 
+  SimulationResults, 
+  FinancialImpact, 
+  OperationalImpact, 
+  RiskLevels, 
+  IncidenceStep,
+  NetworkNode,
+  NetworkEdge,
+  CascadeResults,
+  NetworkNodeImpact
+} from "@/types/simulationTypes";
 
 // Calculate the number of compromised accounts based on simulation parameters
 const calculateCompromisedAccounts = (
@@ -267,4 +277,277 @@ export const formatPercentage = (value: number): string => {
     style: 'percent',
     maximumFractionDigits: 1
   }).format(value);
+};
+
+// Generate default FDNA network based on business profile
+export const generateDefaultNetwork = (businessProfile: BusinessProfile): { nodes: NetworkNode[], edges: NetworkEdge[] } => {
+  const { criticalSystemsCount, dataImportance, techMaturity } = businessProfile;
+  
+  // Base vulnerability based on tech maturity (inverse relationship)
+  const baseVulnerability = 1 - (techMaturity / 10);
+  
+  // Create nodes
+  const nodes: NetworkNode[] = [
+    // Feeder nodes (source of the attack/compromise)
+    {
+      id: "email",
+      name: "Email System",
+      type: "feeder",
+      category: "confidentiality",
+      importance: 8,
+      vulnerabilityLevel: baseVulnerability * 1.2, // Email often more vulnerable
+      impactLevel: 0 // Will be calculated during simulation
+    },
+    {
+      id: "credentials",
+      name: "User Credentials",
+      type: "feeder",
+      category: "confidentiality",
+      importance: 9,
+      vulnerabilityLevel: baseVulnerability * 1.1,
+      impactLevel: 0
+    },
+    {
+      id: "workstations",
+      name: "Employee Workstations",
+      type: "feeder",
+      category: "integrity",
+      importance: 7,
+      vulnerabilityLevel: baseVulnerability * 1.3,
+      impactLevel: 0
+    },
+    
+    // Receiver nodes (impacted by the attack)
+    {
+      id: "customer_data",
+      name: "Customer Data",
+      type: "receiver",
+      category: "confidentiality",
+      importance: dataImportance,
+      vulnerabilityLevel: baseVulnerability,
+      impactLevel: 0
+    },
+    {
+      id: "financial_systems",
+      name: "Financial Systems",
+      type: "receiver",
+      category: "integrity",
+      importance: 9,
+      vulnerabilityLevel: baseVulnerability * 0.9, // Usually better protected
+      impactLevel: 0
+    },
+    {
+      id: "productivity_apps",
+      name: "Productivity Apps",
+      type: "receiver",
+      category: "availability",
+      importance: 6,
+      vulnerabilityLevel: baseVulnerability,
+      impactLevel: 0
+    },
+    {
+      id: "communication",
+      name: "Communication Systems",
+      type: "receiver",
+      category: "availability",
+      importance: 8,
+      vulnerabilityLevel: baseVulnerability,
+      impactLevel: 0
+    }
+  ];
+  
+  // Add any additional critical systems based on criticalSystemsCount
+  if (criticalSystemsCount > 5) {
+    nodes.push({
+      id: "crm",
+      name: "CRM System",
+      type: "receiver",
+      category: "integrity",
+      importance: 8,
+      vulnerabilityLevel: baseVulnerability,
+      impactLevel: 0
+    });
+  }
+  
+  if (criticalSystemsCount > 7) {
+    nodes.push({
+      id: "erp",
+      name: "ERP System",
+      type: "receiver",
+      category: "integrity",
+      importance: 9,
+      vulnerabilityLevel: baseVulnerability * 0.8,
+      impactLevel: 0
+    });
+  }
+  
+  // Create edges
+  const edges: NetworkEdge[] = [
+    // Email system connections
+    {
+      source: "email",
+      target: "customer_data",
+      dependencyStrength: 0.7,
+      category: "c-to-c"
+    },
+    {
+      source: "email",
+      target: "communication",
+      dependencyStrength: 0.9,
+      category: "c-to-a"
+    },
+    
+    // Credentials connections
+    {
+      source: "credentials",
+      target: "financial_systems",
+      dependencyStrength: 0.8,
+      category: "c-to-i"
+    },
+    {
+      source: "credentials",
+      target: "customer_data",
+      dependencyStrength: 0.9,
+      category: "c-to-c"
+    },
+    
+    // Workstation connections
+    {
+      source: "workstations",
+      target: "productivity_apps",
+      dependencyStrength: 0.8,
+      category: "i-to-a"
+    },
+    {
+      source: "workstations",
+      target: "communication",
+      dependencyStrength: 0.6,
+      category: "i-to-a"
+    }
+  ];
+  
+  // Add conditional edges for additional systems
+  if (criticalSystemsCount > 5) {
+    edges.push(
+      {
+        source: "credentials",
+        target: "crm",
+        dependencyStrength: 0.7,
+        category: "c-to-i"
+      },
+      {
+        source: "workstations",
+        target: "crm",
+        dependencyStrength: 0.5,
+        category: "i-to-i"
+      }
+    );
+  }
+  
+  if (criticalSystemsCount > 7) {
+    edges.push(
+      {
+        source: "credentials",
+        target: "erp",
+        dependencyStrength: 0.8,
+        category: "c-to-i"
+      },
+      {
+        source: "financial_systems",
+        target: "erp",
+        dependencyStrength: 0.7,
+        category: "i-to-i"
+      }
+    );
+  }
+  
+  return { nodes, edges };
+};
+
+// Calculate cascade impact through the network
+export const calculateCascadeImpact = (
+  businessProfile: BusinessProfile,
+  compromisedAccounts: number,
+  nodes: NetworkNode[],
+  edges: NetworkEdge[]
+): CascadeResults => {
+  const { employeeCount } = businessProfile;
+  
+  // Calculate initial impact for feeder nodes based on compromised accounts
+  const compromiseRatio = compromisedAccounts / employeeCount;
+  let updatedNodes = [...nodes];
+  
+  // Set initial impact on feeder nodes
+  updatedNodes = updatedNodes.map(node => {
+    if (node.type === "feeder") {
+      // Calculate impact based on compromised accounts and node vulnerability
+      const initialImpact = Math.min(compromiseRatio * node.vulnerabilityLevel * 2, 1);
+      return { ...node, impactLevel: initialImpact };
+    }
+    return node;
+  });
+  
+  // Track cascade levels for visualization
+  const cascadeLevels: NetworkNodeImpact[][] = [];
+  const initialImpacts: NetworkNodeImpact[] = updatedNodes
+    .filter(node => node.type === "feeder" && node.impactLevel > 0)
+    .map(node => ({
+      nodeId: node.id,
+      impactLevel: node.impactLevel,
+      cascadeStep: 0
+    }));
+  
+  cascadeLevels.push(initialImpacts);
+  
+  // Propagate impact through the network for multiple steps
+  const MAX_CASCADE_STEPS = 3;
+  
+  for (let step = 0; step < MAX_CASCADE_STEPS; step++) {
+    const stepImpacts: NetworkNodeImpact[] = [];
+    let impactInThisStep = false;
+    
+    // For each edge, propagate impact from source to target
+    edges.forEach(edge => {
+      const sourceNode = updatedNodes.find(n => n.id === edge.source);
+      const targetNode = updatedNodes.find(n => n.id === edge.target);
+      
+      if (sourceNode && targetNode && sourceNode.impactLevel > 0) {
+        // Calculate propagated impact
+        const propagatedImpact = sourceNode.impactLevel * 
+                               edge.dependencyStrength * 
+                               targetNode.vulnerabilityLevel;
+        
+        // Only update if the propagated impact is greater than current impact
+        if (propagatedImpact > targetNode.impactLevel) {
+          const newImpact = Math.min(propagatedImpact, 1);
+          
+          // Update the node
+          updatedNodes = updatedNodes.map(n => 
+            n.id === targetNode.id ? { ...n, impactLevel: newImpact } : n
+          );
+          
+          // Record this impact for cascade visualization
+          stepImpacts.push({
+            nodeId: targetNode.id,
+            impactLevel: newImpact,
+            cascadeStep: step + 1
+          });
+          
+          impactInThisStep = true;
+        }
+      }
+    });
+    
+    if (stepImpacts.length > 0) {
+      cascadeLevels.push(stepImpacts);
+    }
+    
+    // If no impact propagated in this step, we're done
+    if (!impactInThisStep) break;
+  }
+  
+  return {
+    nodes: updatedNodes,
+    cascadeLevels
+  };
 };
