@@ -35,6 +35,9 @@ const formSchema = z.object({
   }),
 });
 
+// This ensures the form schema matches the BusinessProfile type
+type FormValues = z.infer<typeof formSchema>;
+
 interface BusinessProfileFormProps {
   onSubmit: (data: BusinessProfile) => void;
 }
@@ -42,7 +45,7 @@ interface BusinessProfileFormProps {
 const BusinessProfileForm = ({ onSubmit }: BusinessProfileFormProps) => {
   const [submitted, setSubmitted] = useState(false);
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       companyName: "",
@@ -56,8 +59,21 @@ const BusinessProfileForm = ({ onSubmit }: BusinessProfileFormProps) => {
     },
   });
 
-  const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    onSubmit(values);
+  const handleSubmit = (values: FormValues) => {
+    // Since we're using Zod validation, we know all required fields are present
+    // So we can safely cast the form values to BusinessProfile type
+    const businessProfileData: BusinessProfile = {
+      companyName: values.companyName,
+      industry: values.industry,
+      employeeCount: values.employeeCount,
+      annualRevenue: values.annualRevenue,
+      dataImportance: values.dataImportance,
+      techMaturity: values.techMaturity,
+      averageSalary: values.averageSalary,
+      criticalSystemsCount: values.criticalSystemsCount,
+    };
+    
+    onSubmit(businessProfileData);
     setSubmitted(true);
   };
 
