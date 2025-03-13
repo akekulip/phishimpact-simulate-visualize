@@ -48,9 +48,14 @@ const Index = () => {
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
             PhishImpact: Simulate and Visualize Phishing Risk
           </h1>
-          <p className="mt-2 text-lg text-gray-600 dark:text-gray-400">
-            Model the potential impact of phishing attacks on your small business
-          </p>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between">
+            <p className="mt-2 text-lg text-gray-600 dark:text-gray-400">
+              Model the potential impact of phishing attacks on your small business
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 sm:mt-0">
+              A CCR Cyber Cascade Risk Lab Project
+            </p>
+          </div>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
