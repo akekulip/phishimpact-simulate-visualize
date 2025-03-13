@@ -5,6 +5,7 @@ import BusinessProfileForm from "@/components/BusinessProfileForm";
 import PhishingSimulator from "@/components/PhishingSimulator";
 import ImpactDashboard from "@/components/ImpactDashboard";
 import DependencyNetworkSimulation from "@/components/DependencyNetworkSimulation";
+import FDNACyberGraph from "@/components/FDNACyberGraph";
 import { BusinessProfile } from "@/types/businessTypes";
 import { SimulationResults } from "@/types/simulationTypes";
 import { calculatePhishingImpact } from "@/utils/simulationUtils";
@@ -74,6 +75,11 @@ const Index = () => {
                   businessProfile={businessProfile!}
                   simulationParams={simulationParams}
                   results={simulationResults}
+                />
+                
+                <FDNACyberGraph 
+                  businessProfile={businessProfile!}
+                  compromisedAccounts={simulationResults.compromisedAccounts}
                 />
                 
                 <DependencyNetworkSimulation 

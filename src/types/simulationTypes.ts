@@ -70,3 +70,31 @@ export interface NetworkNodeImpact {
   impactLevel: number;
   cascadeStep: number;
 }
+
+// New detailed FDNA visualization types
+export interface FDNAGraphNode {
+  id: string;
+  name: string;
+  type: "feeder" | "receiver";
+  confidentiality: number; // 0-1 value for C in CIA
+  integrity: number; // 0-1 value for I in CIA
+  availability: number; // 0-1 value for A in CIA
+  performance: number; // Overall performance (0-1)
+  x?: number; // Position for visualization
+  y?: number; // Position for visualization
+}
+
+export interface FDNAGraphEdge {
+  id: string;
+  source: string; // Source node ID
+  target: string; // Target node ID
+  sourceCategory: "confidentiality" | "integrity" | "availability";
+  targetCategory: "confidentiality" | "integrity" | "availability";
+  alpha: number; // Operability dependency (0-1)
+  beta: number; // Strength dependency (0-1)
+}
+
+export interface FDNAGraph {
+  nodes: FDNAGraphNode[];
+  edges: FDNAGraphEdge[];
+}
