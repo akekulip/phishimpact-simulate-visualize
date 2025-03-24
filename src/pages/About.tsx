@@ -121,7 +121,7 @@ const About = () => {
                       </code>
                     </div>
                     <p>
-                      Revenue loss percentage is capped at 15% of annual revenue to maintain realistic estimates. Industry risk multipliers are pre-defined values that adjust impact based on your industry's risk profile:
+                      Revenue loss percentage is capped at 15% of annual revenue to maintain realistic estimates. Industry risk multipliers are pre-defined values that adjust impact based on your industry&apos;s risk profile:
                     </p>
                     <ul className="list-disc pl-6 mt-2 space-y-1">
                       <li>Healthcare: 1.5×</li>
@@ -152,7 +152,7 @@ const About = () => {
                   <section>
                     <h3 className="text-lg font-medium mb-2">Regulatory Fines</h3>
                     <p>
-                      For businesses handling sensitive data (Data Importance > 7), potential regulatory fines are calculated:
+                      For businesses handling sensitive data (Data Importance &gt; 7), potential regulatory fines are calculated:
                     </p>
                     <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-md my-2">
                       <code>
@@ -282,7 +282,7 @@ const About = () => {
                   <section>
                     <h3 className="text-lg font-medium mb-2">Node Vulnerability</h3>
                     <p>
-                      Each node's vulnerability is calculated as:
+                      Each node&apos;s vulnerability is calculated as:
                     </p>
                     <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-md my-2">
                       <code>
@@ -356,19 +356,19 @@ const About = () => {
               <section>
                 <h3 className="text-lg font-medium mb-2">Financial Risk</h3>
                 <ul className="list-disc pl-6 space-y-1">
-                  <li><strong>Low:</strong> Financial impact < 1% of annual revenue</li>
+                  <li><strong>Low:</strong> Financial impact &lt; 1% of annual revenue</li>
                   <li><strong>Medium:</strong> Financial impact between 1% and 5% of annual revenue</li>
                   <li><strong>High:</strong> Financial impact between 5% and 15% of annual revenue</li>
-                  <li><strong>Critical:</strong> Financial impact > 15% of annual revenue</li>
+                  <li><strong>Critical:</strong> Financial impact &gt; 15% of annual revenue</li>
                 </ul>
               </section>
               
               <section>
                 <h3 className="text-lg font-medium mb-2">Operational Risk</h3>
                 <ul className="list-disc pl-6 space-y-1">
-                  <li><strong>Low:</strong> Recovery time < 2 days and productivity loss < 20%</li>
-                  <li><strong>Medium:</strong> Recovery time < 5 days and productivity loss < 40%</li>
-                  <li><strong>High:</strong> Recovery time < 10 days and productivity loss < 70%</li>
+                  <li><strong>Low:</strong> Recovery time &lt; 2 days and productivity loss &lt; 20%</li>
+                  <li><strong>Medium:</strong> Recovery time &lt; 5 days and productivity loss &lt; 40%</li>
+                  <li><strong>High:</strong> Recovery time &lt; 10 days and productivity loss &lt; 70%</li>
                   <li><strong>Critical:</strong> Recovery time ≥ 10 days or productivity loss ≥ 70%</li>
                 </ul>
               </section>
@@ -376,10 +376,10 @@ const About = () => {
               <section>
                 <h3 className="text-lg font-medium mb-2">Reputational Risk</h3>
                 <ul className="list-disc pl-6 space-y-1">
-                  <li><strong>Low:</strong> Reputational impact < 0.5% of annual revenue</li>
+                  <li><strong>Low:</strong> Reputational impact &lt; 0.5% of annual revenue</li>
                   <li><strong>Medium:</strong> Reputational impact between 0.5% and 2% of annual revenue</li>
                   <li><strong>High:</strong> Reputational impact between 2% and 5% of annual revenue</li>
-                  <li><strong>Critical:</strong> Reputational impact > 5% of annual revenue</li>
+                  <li><strong>Critical:</strong> Reputational impact &gt; 5% of annual revenue</li>
                 </ul>
               </section>
               
@@ -402,7 +402,7 @@ const About = () => {
                 </ul>
                 <p>Overall risk levels are determined as:</p>
                 <ul className="list-disc pl-6 mt-2 space-y-1">
-                  <li><strong>Low:</strong> Average score < 1.5</li>
+                  <li><strong>Low:</strong> Average score &lt; 1.5</li>
                   <li><strong>Medium:</strong> Average score between 1.5 and 2.5</li>
                   <li><strong>High:</strong> Average score between 2.5 and 3.5</li>
                   <li><strong>Critical:</strong> Average score ≥ 3.5</li>
