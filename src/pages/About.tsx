@@ -1,4 +1,3 @@
-
 import Layout from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -430,6 +429,66 @@ const About = () => {
               </ol>
               <p>
                 This analysis helps identify threshold points where minor increases in attack incidence lead to disproportionate impact increases.
+              </p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Info className="h-5 w-5 mr-2" />
+                Model Assumptions
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-gray-700 dark:text-gray-300">
+              <p>
+                The PhishImpact simulation model makes the following key assumptions to balance 
+                accuracy with usability:
+              </p>
+              
+              <section>
+                <h3 className="text-lg font-medium mb-2">Phishing Attack Assumptions</h3>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li><strong>Uniform Distribution:</strong> Phishing emails are assumed to be distributed 
+                    uniformly across all employees, regardless of role or department.</li>
+                  <li><strong>Consistent Behavior:</strong> All employees are assumed to have equal 
+                    likelihood of clicking on phishing links, not accounting for varying security awareness.</li>
+                </ul>
+              </section>
+              
+              <section>
+                <h3 className="text-lg font-medium mb-2">Impact Scaling Assumptions</h3>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li><strong>Linear Scaling:</strong> Many impact calculations scale linearly with the 
+                    number of compromised accounts, though real-world breaches may have non-linear effects.</li>
+                  <li><strong>Industry Risk Multipliers:</strong> Fixed risk multipliers are used by industry, 
+                    based on averages that may not perfectly represent specific organizations.</li>
+                </ul>
+              </section>
+              
+              <section>
+                <h3 className="text-lg font-medium mb-2">Recovery Assumptions</h3>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li><strong>Recovery Capability:</strong> Recovery time calculations assume typical 
+                    recovery capabilities based on technical maturity rating.</li>
+                  <li><strong>Working Calendar:</strong> Productivity calculations assume 240 working 
+                    days per year for all businesses.</li>
+                </ul>
+              </section>
+              
+              <section>
+                <h3 className="text-lg font-medium mb-2">Technical Assumptions</h3>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li><strong>Cascade Limits:</strong> Network simulation assumes a maximum of 3 cascade 
+                    steps for impact propagation.</li>
+                  <li><strong>Standard Costs:</strong> Base remediation cost per compromised account is 
+                    assumed to be $3,000 (industry average).</li>
+                </ul>
+              </section>
+              
+              <p className="mt-4 text-sm italic">
+                These assumptions help create a practical model while acknowledging that real-world scenarios 
+                may have additional complexities not fully captured by the simulation.
               </p>
             </CardContent>
           </Card>
