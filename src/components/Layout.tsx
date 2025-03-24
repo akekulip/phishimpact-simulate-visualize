@@ -1,6 +1,7 @@
 
 import { ReactNode } from "react";
-import { Shield } from "lucide-react";
+import { Shield, Info } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface LayoutProps {
   children: ReactNode;
@@ -26,7 +27,14 @@ const Layout = ({ children }: LayoutProps) => {
                 />
               </div>
             </div>
-            <div>
+            <div className="flex items-center space-x-6">
+              <Link 
+                to="/about" 
+                className="flex items-center text-white hover:text-phishing-200 transition-colors"
+              >
+                <Info className="h-4 w-4 mr-1" />
+                <span>About the calculations</span>
+              </Link>
               <span className="text-sm">Visualize. Simulate. Mitigate.</span>
             </div>
           </div>

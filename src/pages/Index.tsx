@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import BusinessProfileForm from "@/components/BusinessProfileForm";
 import PhishingSimulator from "@/components/PhishingSimulator";
@@ -10,7 +9,6 @@ import FDNACyberGraph from "@/components/FDNACyberGraph";
 import { BusinessProfile } from "@/types/businessTypes";
 import { SimulationResults } from "@/types/simulationTypes";
 import { calculatePhishingImpact } from "@/utils/simulationUtils";
-import { Info } from "lucide-react";
 
 const Index = () => {
   const [businessProfile, setBusinessProfile] = useState<BusinessProfile | null>(null);
@@ -57,14 +55,7 @@ const Index = () => {
               </p>
             </div>
             <div className="mt-4 md:mt-0 flex items-center">
-              <Link 
-                to="/about" 
-                className="flex items-center text-phishing-600 hover:text-phishing-800 transition-colors"
-              >
-                <Info className="h-4 w-4 mr-1" />
-                <span>About the calculations</span>
-              </Link>
-              <p className="text-sm text-gray-500 dark:text-gray-400 ml-4">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 A CCR Cyber Cascade Risk Lab Project
               </p>
             </div>
