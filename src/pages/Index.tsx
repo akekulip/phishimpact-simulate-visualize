@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import BusinessProfileForm from "@/components/BusinessProfileForm";
 import PhishingSimulator from "@/components/PhishingSimulator";
@@ -9,6 +10,7 @@ import FDNACyberGraph from "@/components/FDNACyberGraph";
 import { BusinessProfile } from "@/types/businessTypes";
 import { SimulationResults } from "@/types/simulationTypes";
 import { calculatePhishingImpact } from "@/utils/simulationUtils";
+import { Info } from "lucide-react";
 
 const Index = () => {
   const [businessProfile, setBusinessProfile] = useState<BusinessProfile | null>(null);
@@ -45,16 +47,27 @@ const Index = () => {
     <Layout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <header className="mb-10">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
-            PhishImpact: Simulate and Visualize Phishing Risk
-          </h1>
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between">
-            <p className="mt-2 text-lg text-gray-600 dark:text-gray-400">
-              Model the potential impact of phishing attacks on your small business
-            </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 sm:mt-0">
-              A CCR Cyber Cascade Risk Lab Project
-            </p>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+                PhishImpact: Simulate and Visualize Phishing Risk
+              </h1>
+              <p className="mt-2 text-lg text-gray-600 dark:text-gray-400">
+                Model the potential impact of phishing attacks on your small business
+              </p>
+            </div>
+            <div className="mt-4 md:mt-0 flex items-center">
+              <Link 
+                to="/about" 
+                className="flex items-center text-phishing-600 hover:text-phishing-800 transition-colors"
+              >
+                <Info className="h-4 w-4 mr-1" />
+                <span>About the calculations</span>
+              </Link>
+              <p className="text-sm text-gray-500 dark:text-gray-400 ml-4">
+                A CCR Cyber Cascade Risk Lab Project
+              </p>
+            </div>
           </div>
         </header>
 
